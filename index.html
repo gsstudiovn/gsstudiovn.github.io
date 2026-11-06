@@ -1000,7 +1000,8 @@ footer .wrap{display:grid;gap:22px;text-align:center;justify-items:center}
   /* ---------- Ảnh qua Netlify Image CDN ---------- */
   function cdn(src, w, q = 78) {
     if (!src) return "";
-    if (!C.dungImageCDN || location.protocol === "file:" || /^https?:/.test(src)) return src;
+    // Chỉ dùng CDN khi web chạy trên Netlify; GitHub Pages hay máy local thì dùng ảnh gốc
+    if (!C.dungImageCDN || location.protocol === "file:" || !/netlify\.app$/.test(location.hostname) || /^https?:/.test(src)) return src;
     return "/.netlify/images?url=" + encodeURIComponent("/" + src.replace(/^\.?\//, "")) + "&w=" + w + "&fm=webp&q=" + q;
   }
   // Nếu CDN lỗi (vd chạy máy local) → dùng ảnh gốc; nếu ảnh gốc cũng lỗi → hiện placeholder
